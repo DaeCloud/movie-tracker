@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { Movie } from "@/app/models/Movie";
+import { Movie } from "./models/Movie";
 import MovieList from "./components/MovieList";
 import AddMovieDialog from "./components/AddMovieDialog";
 import Image from "next/image";
