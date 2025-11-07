@@ -178,18 +178,21 @@ export default function MovieListItem({ movie, view }: { movie: Movie, view: 'gr
 
           </div>
 
-          {commentsMovie && (
-            <p className={`italic text-gray-400 ${view == "list" ? "max-w-[50%]" : "max-w-full"} hover:cursor-pointer`} title={commentsMovie} onClick={updateComments}>
+          
+        </div>
+        <div>
+        {commentsMovie && (
+            <p className={`italic py-3 text-gray-400 ${view == "list" ? "max-w-[50%]" : "max-w-full"} hover:cursor-pointer mt-2`} title={commentsMovie} onClick={updateComments}>
               “{commentsMovie}”
             </p>
           )}
 
           {!commentsMovie && (
-            <p className="px-3 py-1 rounded-full text-xs font-medium bg-gray-800 text-gray-400 hover:cursor-pointer" onClick={updateComments}>
+            <p className="px-3 py-3 py-1 rounded-full text-xs font-medium bg-gray-800 text-gray-400 hover:cursor-pointer mt-2 w-30 text-center" onClick={updateComments}>
               Add Comment
             </p>
           )}
-        </div>
+          </div>
       </div>
 
       {requesting && (
