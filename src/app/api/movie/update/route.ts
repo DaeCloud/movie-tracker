@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { query } from "../../../lib/db";
-import { Movie } from "@/app/models/Movie";
+import { Movie } from "../../../models/Movie";
 
 export async function POST(request: Request) {
     const movie: Movie = await request.json();

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { Movie } from "@/app/models/Movie";
+import { Movie } from "../../../models/Movie";
 
 export async function POST(request: Request) {
   try {
