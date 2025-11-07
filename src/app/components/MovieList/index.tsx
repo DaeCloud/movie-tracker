@@ -1,6 +1,6 @@
 'use client';
 
-import { Movie } from "@/app/models/Movie";
+import { Movie } from "../../models/Movie";
 import MovieListItem from "../MovieListItem";
 import { useState } from "react";
 

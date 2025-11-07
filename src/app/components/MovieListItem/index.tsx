@@ -1,7 +1,7 @@
 'use client';
 
 import Image from "next/image";
-import { Movie } from "@/app/models/Movie";
+import { Movie } from "../../models/Movie";
 import { useState } from "react";
 
 export default function MovieListItem({ movie }: { movie: Movie }) {

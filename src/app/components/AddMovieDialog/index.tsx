@@ -1,6 +1,6 @@
 'use client';
 
-import { Movie } from "@/app/models/Movie";
+import { Movie } from "../../models/Movie";
 import { useState } from "react";
 import Image from "next/image";
 
