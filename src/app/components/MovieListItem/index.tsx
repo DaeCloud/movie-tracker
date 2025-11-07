@@ -56,6 +56,7 @@ export default function MovieListItem({ movie, view }: { movie: Movie, view: 'gr
   }
 
   const requestMovie = async (id: number) => {
+    setRequesting(true);
     fetch('/api/plex/request', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -63,6 +64,7 @@ export default function MovieListItem({ movie, view }: { movie: Movie, view: 'gr
     })
       .then(response => {
         if (!response.ok) throw new Error("Failed to request movie");
+        setRequesting(false);
         window.location.reload();
       })
       .then(data => {
@@ -189,6 +191,14 @@ export default function MovieListItem({ movie, view }: { movie: Movie, view: 'gr
           )}
         </div>
       </div>
+
+      {requesting && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-70 text-white">
+          <p className="text-lg font-semibold mb-2">Requesting...</p>
+          <p className="text-sm">Please wait</p>
+        </div>
+      )}
+
     </div>
   );
 }
