@@ -4,10 +4,11 @@ import Image from "next/image";
 import { Movie } from "../../models/Movie";
 import { useState } from "react";
 
-export default function MovieListItem({ movie }: { movie: Movie }) {
+export default function MovieListItem({ movie, view }: { movie: Movie, view: 'grid' | 'list' }) {
   const [watchedMovie, setWatchedMovie] = useState(movie.watched);
   const [ratingMovie, setRatingMovie] = useState(movie.rating);
   const [commentsMovie, setCommentsMovie] = useState(movie.comments);
+  const [requesting, setRequesting] = useState(false);
 
   const updateWatchedStatus = async (watched: boolean) => {
     const updatedMovie = { ...movie, watched };
@@ -54,10 +55,42 @@ export default function MovieListItem({ movie }: { movie: Movie }) {
     });
   }
 
+  const requestMovie = async (id: number) => {
+    fetch('/api/plex/request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    })
+      .then(response => {
+        if (!response.ok) throw new Error("Failed to request movie");
+        window.location.reload();
+      })
+      .then(data => {
+        alert("Movie requested successfully!");
+        console.log("Plex request response:", data);
+      })
+      .catch(error => {
+        console.error("Error requesting movie:", error);
+        alert("Error requesting movie.");
+      });
+  };
+
   return (
-    <div className="flex flex-row bg-gray-900 rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+    <div
+      className="relative flex flex-row rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+      style={
+        view === 'grid'
+          ? { backgroundImage: `url('${movie.poster}')`, backgroundSize: 'cover', backgroundPosition: 'center' }
+          : { backgroundColor: '#111827' }
+      }
+    >
+
+      {view === 'grid' && (
+        <div className="absolute inset-0 bg-black/85" aria-hidden="true"></div>
+      )}
+
       {/* Poster */}
-      {movie.poster ? (
+      {movie.poster && view == "list" ? (
         <div className="w-1/6 shrink-0 flex items-start justify-center m-2 rounded-xl">
           <div className="relative w-full aspect-2/3 rounded-xl">
             <Image
@@ -70,14 +103,17 @@ export default function MovieListItem({ movie }: { movie: Movie }) {
             />
           </div>
         </div>
-      ) : (
+      ) : view == "list" ? (
         <div className="w-1/6 flex items-center justify-center bg-gray-800 text-gray-500 text-sm aspect-2/3">
           No poster
         </div>
-      )}
+      ) : ''}
 
       {/* Content */}
-      <div className="flex flex-col justify-between p-6 w-5/6">
+      <div
+        className={`flex flex-col justify-between p-6 relative ${view === 'grid' ? 'w-6/6' : 'w-5/6'
+          }`}
+      >
         <div>
           <h2 className="text-2xl font-bold text-gray-100 mb-2">
             {movie.title || "Untitled"}
@@ -95,14 +131,13 @@ export default function MovieListItem({ movie }: { movie: Movie }) {
         </div>
 
         {/* Details Footer */}
-        <div className="flex items-center justify-between text-sm mt-4">
+        <div className={`flex items-center justify-between text-sm mt-4 ${view === 'grid' ? 'flex-col items-start gap-3' : ''}`}>
           <div className="flex items-center gap-3">
             <span
-              className={`px-3 py-1 rounded-full text-xs font-medium hover:cursor-pointer ${
-                watchedMovie
-                  ? "bg-green-900 text-green-300"
-                  : "bg-yellow-900 text-yellow-300"
-              }`}
+              className={`px-3 py-1 rounded-full text-xs font-medium hover:cursor-pointer ${watchedMovie
+                ? "bg-green-900 text-green-300"
+                : "bg-yellow-900 text-yellow-300"
+                }`}
               onClick={() => updateWatchedStatus(!watchedMovie)}
             >
               {watchedMovie ? "Watched" : "To Watch"}
@@ -121,10 +156,28 @@ export default function MovieListItem({ movie }: { movie: Movie }) {
                 ⭐ Rate Movie
               </span>
             )}
+
+            {movie.available ? (
+              <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-600 text-green-100">
+                Available on Plex
+              </span>
+            ) : movie.requested ? (
+              <span className="px-3 py-1 rounded-full text-xs font-medium bg-orange-500 text-white">
+                Requested on Plex
+              </span>
+            ) : (
+              <button
+                className="px-3 py-1 rounded-full text-xs font-medium bg-red-600 text-white hover:bg-red-700 transition-colors duration-200 hover:cursor-pointer"
+                onClick={() => requestMovie(movie.id)}
+              >
+                Request on Plex
+              </button>
+            )}
+
           </div>
 
           {commentsMovie && (
-            <p className="italic text-gray-400 truncate max-w-[50%] hover:cursor-pointer" title={commentsMovie} onClick={updateComments}>
+            <p className={`italic text-gray-400 ${view == "list" ? "max-w-[50%]" : "max-w-full"} hover:cursor-pointer`} title={commentsMovie} onClick={updateComments}>
               “{commentsMovie}”
             </p>
           )}

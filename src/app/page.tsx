@@ -20,6 +20,7 @@ export default function Home() {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data: Movie[] = await response.json();
         setMovies(data);
+        checkAvailability(data);
       } catch (err) {
         console.error("Failed to fetch movies:", err);
         setError("Failed to load movies.");
@@ -29,6 +30,31 @@ export default function Home() {
     }
     fetchMovies();
   }, []);
+
+  async function checkAvailability(movies: Movie[]) {
+    const updated = await Promise.all(
+      movies.map(async (m) => {
+        try {
+          const response = await fetch("/api/plex/availability", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: m.id }),
+          });
+
+          const data = await response.json();
+          console.log(`Availability for movie ID ${m.id}:`, data.availability);
+          return { ...m, available: data.availability, requested: data.requested };
+        } catch (error) {
+          console.error("Error checking availability:", error);
+          return m; // fallback to original movie if request fails
+        }
+      })
+    );
+
+    setMovies(updated);
+    console.log("Updated movies with availability:", updated);
+  }
+
 
   if (loading) {
     return (
