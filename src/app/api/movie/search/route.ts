@@ -1,0 +1,36 @@
+import { NextResponse } from "next/server";
+import { Movie } from "@/app/models/Movie";
+
+export async function POST(request: Request) {
+  try {
+    const { query } = await request.json();
+    const url = `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=en-US&page=1`;
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${process.env.TMDB_TOKEN}`,
+      },
+    };
+
+    const res = await fetch(url, options);
+    const json = await res.json();
+
+    const output: Movie[] = json.results.map((item: any) => ({
+      id: item.id,
+      title: item.title,
+      year: item.release_date ? item.release_date.substring(0, 4) : null,
+      watched: false,
+      rating: null,
+      comments: null,
+      poster: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : null,
+      summary: item.overview,
+    }));
+
+    console.table(output);
+    return NextResponse.json(output);
+  } catch (err) {
+    console.error("Error fetching movies:", err);
+    return NextResponse.json({ error: "Failed to fetch movies" }, { status: 500 });
+  }
+}
