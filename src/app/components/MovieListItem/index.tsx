@@ -66,6 +66,7 @@ export default function MovieListItem({ movie }: { movie: Movie }) {
               fill
               sizes="(max-width: 768px) 100vw, 33vw"
               className="rounded-xl object-contain"
+              unoptimized
             />
           </div>
         </div>

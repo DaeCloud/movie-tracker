@@ -82,6 +82,7 @@ export default function AddMovieDialog() {
                                                 alt={movie.title || "Poster"}
                                                 fill
                                                 className="object-contain rounded"
+                                                unoptimized
                                             />
                                         </div>
                                     ) : (
