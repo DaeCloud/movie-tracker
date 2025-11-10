@@ -9,4 +9,5 @@ export interface Movie {
   summary?: string | null;
   available?: boolean | null; // not stored in DB
   requested?: boolean | null; // not stored in DB
+  critic?: string | null;
 }
