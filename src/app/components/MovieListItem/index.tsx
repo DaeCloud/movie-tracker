@@ -11,7 +11,7 @@ export default function MovieListItem({ movie, view }: { movie: Movie, view: 'gr
   const [requesting, setRequesting] = useState(false);
 
   const updateWatchedStatus = async (watched: boolean) => {
-    const updatedMovie = { ...movie, watched };
+    const updatedMovie = { ...movie, watched, rating: ratingMovie, comments: commentsMovie };
 
     await fetch('/api/movie/update', {
       method: 'POST',
@@ -32,7 +32,7 @@ export default function MovieListItem({ movie, view }: { movie: Movie, view: 'gr
     }
 
     setRatingMovie(parseInt(rating));
-    const updatedMovie = { ...movie, rating: parseInt(rating) };
+    const updatedMovie = { ...movie, rating: parseInt(rating), watched: watchedMovie, comments: commentsMovie };
 
     await fetch('/api/movie/update', {
       method: 'POST',
@@ -46,7 +46,7 @@ export default function MovieListItem({ movie, view }: { movie: Movie, view: 'gr
     if (comments === null) return; // User cancelled
 
     setCommentsMovie(comments);
-    const updatedMovie = { ...movie, comments };
+    const updatedMovie = { ...movie, comments, watched: watchedMovie, rating: ratingMovie };
 
     await fetch('/api/movie/update', {
       method: 'POST',
