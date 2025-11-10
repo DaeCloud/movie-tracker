@@ -6,6 +6,7 @@ export async function POST(request: Request) {
     const movie: Movie = await request.json();
 
     const omdbResult = await fetch("http://www.omdbapi.com/?i=tt1375666&apikey="+process.env.OMDB_API_KEY);
+    const omdbJson = await omdbResult.json();
 
     try {
         const result = await query(
@@ -19,7 +20,7 @@ export async function POST(request: Request) {
                 movie.comments,
                 movie.poster,
                 movie.summary,
-                omdbResult.Ratings.filter(r => r.Source == "Rotten Tomatoes")[0].Value,
+                omdbJson.Ratings.filter(r => r.Source == "Rotten Tomatoes")[0].Value,
             ]
         );
         return NextResponse.json({ id: result.insertId, ...movie });
