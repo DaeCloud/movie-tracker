@@ -4,9 +4,12 @@ import { Movie } from "../../../models/Movie";
 
 export async function POST(request: Request) {
     const movie: Movie = await request.json();
+
+    const omdbResult = await fetch("http://www.omdbapi.com/?i=tt1375666&apikey="+process.env.OMDB_API_KEY);
+
     try {
         const result = await query(
-            "INSERT INTO movies (id, title, year, watched, rating, comments, poster, summary) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO movies (id, title, year, watched, rating, comments, poster, summary, critic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
             [
                 movie.id,
                 movie.title,
@@ -16,6 +19,7 @@ export async function POST(request: Request) {
                 movie.comments,
                 movie.poster,
                 movie.summary,
+                omdbResult.Ratings.filter(r => r.Source == "Rotten Tomatoes")[0].Value;
             ]
         );
         return NextResponse.json({ id: result.insertId, ...movie });
