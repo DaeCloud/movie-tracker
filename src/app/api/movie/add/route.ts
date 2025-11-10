@@ -19,7 +19,7 @@ export async function POST(request: Request) {
                 movie.comments,
                 movie.poster,
                 movie.summary,
-                omdbResult.Ratings.filter(r => r.Source == "Rotten Tomatoes")[0].Value;
+                omdbResult.Ratings.filter(r => r.Source == "Rotten Tomatoes")[0].Value,
             ]
         );
         return NextResponse.json({ id: result.insertId, ...movie });
