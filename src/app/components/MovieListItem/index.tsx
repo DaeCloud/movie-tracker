@@ -159,6 +159,12 @@ export default function MovieListItem({ movie, view }: { movie: Movie, view: 'gr
               </span>
             )}
 
+            {movie.critic && (
+            <span className="flex items-center gap-1 text-red-400">
+                🍅 {movie.critic}
+            </span>
+            )}
+
             {movie.available ? (
               <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-600 text-green-100">
                 Available on Plex
