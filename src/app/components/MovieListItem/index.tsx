@@ -92,7 +92,7 @@ export default function MovieListItem({ movie, view }: { movie: Movie, view: 'gr
       )}
 
       {movie.critic && (
-        <span className="absolute top-2 right-2 bg-red-600 text-white text-sm font-bold px-2 py-1 rounded-full flex items-center gap-1 shadow-md">
+        <span className="absolute top-0 left-0 z-99 bg-red-200 text-red-900 text-sm font-bold px-2 py-1 rounded-full flex items-center gap-1 shadow-md">
           🍅 {movie.critic}
         </span>
       )}
@@ -140,7 +140,7 @@ export default function MovieListItem({ movie, view }: { movie: Movie, view: 'gr
 
         {/* Details Footer */}
         <div className={`flex items-center justify-between text-sm mt-4 ${view === 'grid' ? 'flex-col items-start gap-3' : ''}`}>
-          <div className="flex flex-row sm:flex-col items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-left gap-3">
             <span
               className={`px-3 py-1 rounded-full text-xs font-medium hover:cursor-pointer ${watchedMovie
                 ? "bg-green-900 text-green-300"
