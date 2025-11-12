@@ -24,6 +24,11 @@ export default function MovieList({ movies }: { movies: Movie[] }) {
                     return (a.rating || 0) - (b.rating || 0);
                 case "rating-desc":
                     return (b.rating || 0) - (a.rating || 0);
+                case "critic-asc":
+                    return (parseInt(a.critic.replace('%', ''))) - (parseInt(b.critic.replace('%', '')));
+                case "critic-desc":
+                    return (parseInt(b.critic.replace('%', ''))) - (parseInt(a.critic.replace('%', '')));
+
                 default:
                     return 0;
             }
@@ -70,6 +75,8 @@ export default function MovieList({ movies }: { movies: Movie[] }) {
                         <option value="year-desc">Year (Newest First)</option>
                         <option value="rating-asc">Rating (Lowest First)</option>
                         <option value="rating-desc">Rating (Highest First)</option>
+                        <option value="critic-asc">Critic (Lowest First)</option>
+                        <option value="critic-desc">Critic (Highest First)</option>
                     </select>
                 </label>
 
