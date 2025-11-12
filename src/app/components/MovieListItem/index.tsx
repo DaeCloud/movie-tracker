@@ -91,6 +91,12 @@ export default function MovieListItem({ movie, view }: { movie: Movie, view: 'gr
         <div className="absolute inset-0 bg-black/85" aria-hidden="true"></div>
       )}
 
+      {movie.critic && (
+        <span className="absolute top-2 right-2 bg-red-600 text-white text-sm font-bold px-2 py-1 rounded-full flex items-center gap-1 shadow-md">
+          🍅 {movie.critic}
+        </span>
+      )}
+
       {/* Poster */}
       {movie.poster && view == "list" ? (
         <div className="w-1/6 shrink-0 flex items-start justify-center m-2 rounded-xl">
@@ -134,7 +140,7 @@ export default function MovieListItem({ movie, view }: { movie: Movie, view: 'gr
 
         {/* Details Footer */}
         <div className={`flex items-center justify-between text-sm mt-4 ${view === 'grid' ? 'flex-col items-start gap-3' : ''}`}>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-row sm:flex-col items-center gap-3">
             <span
               className={`px-3 py-1 rounded-full text-xs font-medium hover:cursor-pointer ${watchedMovie
                 ? "bg-green-900 text-green-300"
@@ -157,12 +163,6 @@ export default function MovieListItem({ movie, view }: { movie: Movie, view: 'gr
               >
                 ⭐ Rate Movie
               </span>
-            )}
-
-            {movie.critic && (
-            <span className="flex items-center gap-1 text-red-400">
-                🍅 {movie.critic}
-            </span>
             )}
 
             {movie.available ? (
