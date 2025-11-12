@@ -5,7 +5,18 @@ import { Movie } from "../../../models/Movie";
 export async function POST(request: Request) {
     const movie: Movie = await request.json();
 
-    const omdbResult = await fetch("http://www.omdbapi.com/?i=tt1375666&apikey="+process.env.OMDB_API_KEY);
+    const res = await fetch(`https://api.themoviedb.org/3/movie/${movie.id}/external_ids`, {
+        method: "GET",
+        headers: {
+            accept: 'application/json',
+            Authorization: `Bearer ${process.env.TMDB_TOKEN}`,
+        },
+    });
+
+    const json = await res.json();
+    const imdbId = json["imdb_id"];
+
+    const omdbResult = await fetch(`http://www.omdbapi.com/?i=${imdbId}&apikey=${process.env.OMDB_API_KEY}`);
     const omdbJson = await omdbResult.json();
 
     try {
