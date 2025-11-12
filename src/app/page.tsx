@@ -74,7 +74,7 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen items-center justify-center font-sans bg-black">
-      <main className="flex min-h-screen w-full max-w-6xl flex-col items-center py-16 px-8 bg-black sm:items-start pt-0">
+      <main className="flex min-h-screen w-full flex-col items-center py-16 px-0 md:px-8 bg-black sm:items-start pt-0">
         <div className="flex items-center justify-between w-full mb-2">
           <div className="flex items-center space-x-4">
             <Image
