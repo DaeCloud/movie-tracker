@@ -19,9 +19,17 @@ export async function POST(request: Request) {
     const omdbResult = await fetch(`http://www.omdbapi.com/?i=${imdbId}&apikey=${process.env.OMDB_API_KEY}`);
     const omdbJson = await omdbResult.json();
 
+    let criticRating = omdbJson.Ratings.filter(r => r.Source == "Rotten Tomatoes");
+
+    if(criticRating && criticRating[0]){
+        criticRating = criticRating[0].Value;
+    } else {
+        criticRating = null;
+    }
+
     try {
         const result = await query(
-            "INSERT INTO movies (id, title, year, watched, rating, comments, poster, summary, critic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            `INSERT INTO ${process.env.DB_TABLE_NAME} (id, title, year, watched, rating, comments, poster, summary, critic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 movie.id,
                 movie.title,
@@ -31,11 +39,12 @@ export async function POST(request: Request) {
                 movie.comments,
                 movie.poster,
                 movie.summary,
-                omdbJson.Ratings.filter(r => r.Source == "Rotten Tomatoes")[0].Value,
+                criticRating,
             ]
         );
         return NextResponse.json({ id: result.insertId, ...movie });
     } catch (error) {
+        console.error(error);
         return NextResponse.json({ error: "Failed to add movie" }, { status: 500 });
     }
 }

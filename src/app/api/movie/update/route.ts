@@ -5,11 +5,9 @@ import { Movie } from "../../../models/Movie";
 export async function POST(request: Request) {
     const movie: Movie = await request.json();
 
-    console.log("Received movie:", movie);
-
     try {
         const result = await query(
-            "UPDATE movies SET title = ?, year = ?, watched = ?, rating = ?, comments = ?, poster = ?, summary = ? WHERE id = ?",
+            `UPDATE ${process.env.DB_TABLE_NAME} SET title = ?, year = ?, watched = ?, rating = ?, comments = ?, poster = ?, summary = ? WHERE id = ?`,
             [
                 movie.title,
                 movie.year,
@@ -24,6 +22,7 @@ export async function POST(request: Request) {
 
         return NextResponse.json({ id: movie.id, ...movie });
     } catch (error) {
+        console.error(error);
         return NextResponse.json({ error: "Failed to update movie" }, { status: 500 });
     }
 }
