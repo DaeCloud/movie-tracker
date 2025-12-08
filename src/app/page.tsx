@@ -105,10 +105,10 @@ export default function Home() {
         <a
           href="/Add Movie To Tracker.shortcut"
           target="_blank"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0057FF] text-white font-medium shadow hover:bg-[#0049d6] transition"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0057FF] text-white font-medium shadow hover:bg-[#0049d6] transition mt-5"
         >
           <Image
-            src="https://developer.apple.com/design/human-interface-guidelines/images/intro/shortcuts_2x.png"
+            src="https://developer.apple.com/assets/elements/icons/shortcuts-mac-app/shortcuts-mac-app-96x96_2x.png"
             alt="Shortcuts Icon"
             className="w-5 h-5"
           />
