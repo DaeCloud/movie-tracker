@@ -108,7 +108,7 @@ export default function Home() {
           className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0057FF] text-white font-medium shadow hover:bg-[#0049d6] transition mt-5"
         >
           <Image
-            src="https://developer.apple.com/assets/elements/icons/shortcuts-mac-app/shortcuts-mac-app-96x96_2x.png"
+            src="/shortcuts-mac-app-96x96_2x.png"
             alt="Shortcuts Icon"
             className="w-5 h-5"
           />
