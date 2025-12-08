@@ -6,6 +6,7 @@ import MovieList from "./components/MovieList";
 import AddMovieDialog from "./components/AddMovieDialog";
 import Image from "next/image";
 import Icon from './public/Icon.png';
+import shortcutsIcon from './public/shortcuts-mac-app-96x96_2x.png';
 
 export default function Home() {
   const [movies, setMovies] = useState([]);
@@ -108,7 +109,7 @@ export default function Home() {
           className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0057FF] text-white font-medium shadow hover:bg-[#0049d6] transition mt-5"
         >
           <Image
-            src="/shortcuts-mac-app-96x96_2x.png"
+            src={shortcutsIcon}
             alt="Shortcuts Icon"
             width={20}
             height={20}
