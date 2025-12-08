@@ -45,6 +45,10 @@ export async function POST(request: Request) {
         return NextResponse.json({ id: result.insertId, ...movie });
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ error: "Failed to add movie" }, { status: 500 });
+        if (error.code && error.code === "ER_DUP_ENTRY") {
+            return NextResponse.json({ error: "Movie already exists" }, { status: 409 });
+        }
+        
+        return NextResponse.json({ error: "Failed to add movie", code: error.code, message: error.message }, { status: 500 });
     }
 }
