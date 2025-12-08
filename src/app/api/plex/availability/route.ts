@@ -18,7 +18,14 @@ export async function POST(request: Request) {
 
         const data = await response.json();
 
-        console.log(`Movie ID ${id} availability:`, data.available);
+        let plexUrl = data.plexUrl;
+        let plexId = null;
+        if(plexUrl){
+            let plexUrlArr = plexUrl.split("%2F");
+            plexId = plexUrlArr[plexUrlArr.length - 1];
+        }
+        
+        console.log(plexId);
 
         return NextResponse.json({ availability: data.available, requested: data.requested });
     } catch (error) {

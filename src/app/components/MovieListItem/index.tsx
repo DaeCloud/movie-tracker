@@ -188,14 +188,50 @@ export default function MovieListItem({
               ⭐ Rate
             </p>
           )}
-        </div>
 
-        {requesting && (
-          <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-70 text-white">
-            <p className="text-lg font-semibold mb-2">Requesting...</p>
-            <p className="text-sm">Please wait</p>
+          {/* Availability */}
+          {requestList.includes(movie.id) ? (
+            <span className="px-3 py-1 rounded-full text-xs font-medium bg-orange-500 text-white my-2">
+              <span className="loader"></span> Requesting...
+            </span>
+          ) : movie.available ? (
+            <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-600 text-green-100 my-2">
+              Available on Plex
+            </span>
+          ) : requestedMovie ? (
+            <span className="px-3 py-1 rounded-full text-xs font-medium bg-orange-500 text-white my-2">
+              Requested on Plex
+            </span>
+          ) : (
+            <button
+              className="px-3 py-1 rounded-full text-xs font-medium bg-red-600 text-white hover:bg-red-700 cursor-pointer my-2"
+              onClick={() => requestMovie(movie.id)}
+            >
+              Request on Plex
+            </button>
+          )}
+
+          {/* Comments */}
+          <div>
+            {commentsMovie ? (
+              <p
+                className={`px-1 py-1 rounded-md text-xs font-medium bg-gray-800 text-gray-400 cursor-pointer mt-2 text-center line-clamp-1`}
+                title={commentsMovie}
+                onClick={updateComments}
+              >
+                “{commentsMovie}”
+              </p>
+            ) : (
+              <p
+                className="px-3 py-1 rounded-full text-xs font-medium bg-gray-800 text-gray-400 cursor-pointer mt-2 text-center"
+                onClick={updateComments}
+              >
+                Add Comment
+              </p>
+            )}
           </div>
-        )}
+        </div>
+        
       </div>
     );
   }
@@ -330,8 +366,7 @@ export default function MovieListItem({
         <div>
           {commentsMovie ? (
             <p
-              className={`italic py-3 text-gray-400 ${view === "list" ? "max-w-[50%]" : "max-w-full"
-                } cursor-pointer mt-2`}
+              className={`italic py-3 text-gray-400 max-w-full cursor-pointer mt-2`}
               title={commentsMovie}
               onClick={updateComments}
             >

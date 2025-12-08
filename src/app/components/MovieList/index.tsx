@@ -2,12 +2,34 @@
 
 import { Movie } from "../../models/Movie";
 import MovieListItem from "../MovieListItem";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function MovieList({ movies }: { movies: Movie[] }) {
     const [filterWatched, setFilterWatched] = useState(false);
-    const [sortOption, setSortOption] = useState("title-asc");
-    const [view, setView] = useState<'grid' | 'list' | 'poster'>('list');
+    const [sortOption, setSortOption] = useState(() => {
+        if (typeof window === "undefined") return 'title-asc'; // SSR safe
+        const saved = localStorage.getItem("sort");
+        if (saved === 'title-asc' || saved === 'title-desc' || saved === 'year-asc' || saved === 'year-desc' || saved === 'rating-asc' || saved === 'rating-desc' || saved === 'critic-asc' || saved === 'critic-desc') {
+            return saved;
+        }
+        return 'title-asc';
+    });
+    const [view, setView] = useState<'grid' | 'list' | 'poster'>(() => {
+        if (typeof window === "undefined") return 'list'; // SSR safe
+        const saved = localStorage.getItem("view");
+        if (saved === 'grid' || saved === 'list' || saved === 'poster') {
+        return saved;
+        }
+        return 'list';
+    });
+
+    useEffect(() => {
+        localStorage.setItem("view", view);
+    }, [view]);
+
+    useEffect(() => {
+        localStorage.setItem("sort", sortOption);
+    }, [sortOption]);
 
     const sortMovies = (movies: Movie[]) => {
         return movies.sort((a, b) => {
@@ -25,9 +47,9 @@ export default function MovieList({ movies }: { movies: Movie[] }) {
                 case "rating-desc":
                     return (b.rating || 0) - (a.rating || 0);
                 case "critic-asc":
-                    return (parseInt(a.critic.replace('%', ''))) - (parseInt(b.critic.replace('%', '')));
+                    return (parseInt(a.critic ? a.critic.replace('%', '') : "0") || 0) - (parseInt(b.critic ? b.critic.replace('%', '') : "0") || 0);
                 case "critic-desc":
-                    return (parseInt(b.critic.replace('%', ''))) - (parseInt(a.critic.replace('%', '')));
+                    return (parseInt(b.critic ? b.critic.replace('%', '') : "0") || 0) - (parseInt(a.critic ? a.critic.replace('%', '') : "0") || 0);
 
                 default:
                     return 0;
