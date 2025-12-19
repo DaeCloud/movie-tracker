@@ -4,8 +4,8 @@ import { query } from "../../../lib/db";
 
 export async function POST(request: Request) {
   try {
-    const { query } = await request.json();
-    const url = `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=en-US&page=1`;
+    const { search } = await request.json();
+    const url = `https://api.themoviedb.org/3/search/movie?query=${search}&include_adult=false&language=en-US&page=1`;
     const options = {
       method: 'GET',
       headers: {
@@ -17,10 +17,10 @@ export async function POST(request: Request) {
     const res = await fetch(url, options);
     const json = await res.json();
 
-    const dbRes = query(`SELECT * FROM ${process.env.DB_TABLE_NAME}`);
+    const dbRes = await query(`SELECT * FROM ${process.env.DB_TABLE_NAME}`);
 
     function alreadyAdded(id){
-      return dbRes.filter(m => m.id = id).length == 0 ? false : true;
+      return dbRes.filter(m => m.id == id).length == 0 ? false : true;
     }
 
     let output: Movie[] = json.results.map((item: any) => ({

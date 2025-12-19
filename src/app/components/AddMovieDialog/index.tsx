@@ -12,7 +12,7 @@ export default function AddMovieDialog() {
         fetch('/api/movie/search', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ query }),
+            body: JSON.stringify({ search: query }),
         })
             .then(response => response.json())
             .then(data => {
