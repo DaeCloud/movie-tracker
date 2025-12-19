@@ -29,7 +29,7 @@ export async function POST(request: Request) {
 
     try {
         const result = await query(
-            `INSERT INTO ${process.env.DB_TABLE_NAME} (id, title, year, watched, rating, comments, poster, summary, critic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            `INSERT INTO ${process.env.DB_TABLE_NAME} (id, title, year, watched, rating, comments, poster, summary, critic, backdrop) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 movie.id,
                 movie.title,
@@ -40,6 +40,7 @@ export async function POST(request: Request) {
                 movie.poster,
                 movie.summary,
                 criticRating,
+                movie.backdrop,
             ]
         );
         return NextResponse.json({ id: result.insertId, ...movie });

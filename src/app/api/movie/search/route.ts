@@ -25,6 +25,7 @@ export async function POST(request: Request) {
       comments: null,
       poster: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : null,
       summary: item.overview,
+      backdrop: item.backdrop_path ? `https://image.tmdb.org/t/p/original${item.backdrop_path}` : null,
     }));
 
     console.table(output);

@@ -10,4 +10,5 @@ export interface Movie {
   available?: boolean | null; // not stored in DB
   requested?: boolean | null; // not stored in DB
   critic?: string | null;
+  backdrop?: string | null;
 }
