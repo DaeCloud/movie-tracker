@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Movie } from "../../../models/Movie";
+import { query } from "../../../lib/db";
 
 export async function POST(request: Request) {
   try {
@@ -16,7 +17,13 @@ export async function POST(request: Request) {
     const res = await fetch(url, options);
     const json = await res.json();
 
-    const output: Movie[] = json.results.map((item: any) => ({
+    const dbRes = query(`SELECT * FROM ${process.env.DB_TABLE_NAME}`);
+
+    function alreadyAdded(id){
+      return dbRes.filter(m => m.id = id).length == 0 ? false : true;
+    }
+
+    let output: Movie[] = json.results.map((item: any) => ({
       id: item.id,
       title: item.title,
       year: item.release_date ? item.release_date.substring(0, 4) : null,
@@ -26,6 +33,7 @@ export async function POST(request: Request) {
       poster: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : null,
       summary: item.overview,
       backdrop: item.backdrop_path ? `https://image.tmdb.org/t/p/original${item.backdrop_path}` : null,
+      added: alreadyAdded(item.id)
     }));
 
     console.table(output);

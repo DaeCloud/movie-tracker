@@ -11,4 +11,5 @@ export interface Movie {
   requested?: boolean | null; // not stored in DB
   critic?: string | null;
   backdrop?: string | null;
+  added?: boolean | null;
 }
