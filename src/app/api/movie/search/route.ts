@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       id: item.id,
       title: item.title,
       year: item.release_date ? item.release_date.substring(0, 4) : null,
-      watched: false,
+      watched: 0,
       rating: null,
       comments: null,
       poster: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : null,
