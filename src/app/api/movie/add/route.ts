@@ -3,6 +3,8 @@ import { query } from "../../../lib/db";
 import { Movie } from "../../../models/Movie";
 
 export async function POST(request: Request) {
+    console.log("GET /api/movie/add");
+
     const movie: Movie = await request.json();
 
     const res = await fetch(`https://api.themoviedb.org/3/movie/${movie.id}/external_ids`, {
@@ -19,7 +21,13 @@ export async function POST(request: Request) {
     const omdbResult = await fetch(`http://www.omdbapi.com/?i=${imdbId}&apikey=${process.env.OMDB_API_KEY}`);
     const omdbJson = await omdbResult.json();
 
-    let criticRating = omdbJson.Ratings.filter(r => r.Source == "Rotten Tomatoes");
+    console.log(omdbJson);
+
+    let criticRating;
+
+    if (omdbJson && omdbJson.Ratings) {
+        criticRating = omdbJson.Ratings.filter(r => r.Source == "Rotten Tomatoes");
+    }
 
     if(criticRating && criticRating[0]){
         criticRating = criticRating[0].Value;
